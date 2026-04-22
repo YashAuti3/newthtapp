@@ -98,12 +98,7 @@ function BookingSection() {
                   </div>
                 </div>
 
-                <button 
-                  className="view-details-btn"
-                  onClick={() => navigate(`/holiday-packages/${exp.id}`)}
-                >
-                  View Details
-                </button>
+                
               </div>
             </div>
           ))}

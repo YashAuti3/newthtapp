@@ -14,7 +14,7 @@ function Footer() {
           <h4>Services</h4>
           <p>Cab Services</p>
           <p>Transport</p>
-          <p>Holiday Plans</p>
+          
         </div>
 
         <div>

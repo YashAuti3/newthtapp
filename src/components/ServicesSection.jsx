@@ -59,17 +59,7 @@ function ServicesSection() {
       ],
       buttonColor: "blue",
     },
-    {
-      id: "holiday",
-      title: "Holiday Plans",
-      desc: "Destination-based package discovery and booking.",
-      fields: [
-        { type: "text", placeholder: "From city" },
-        { type: "text", placeholder: "Destination" },
-        { type: "datetime", placeholder: "DATE / TRAVELLERS" }
-      ],
-      buttonColor: "green",
-    },
+   
   ];
 
   return (
