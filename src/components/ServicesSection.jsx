@@ -1,20 +1,40 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { useNavigate } from "react-router-dom"; // 🔥 added
 
 function ServicesSection() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 🔥 added
+
   const [selectedService, setSelectedService] = useState("cab");
   const [weight, setWeight] = useState(1);
+
   const [dates, setDates] = useState({
     cab: null,
     holiday: null
   });
+
   const [showCalendar, setShowCalendar] = useState({
     cab: false,
     holiday: false
   });
+
+  const [locationValues, setLocationValues] = useState({
+    pickup: "",
+    drop: ""
+  });
+
+  const [showLocationBox, setShowLocationBox] = useState(null);
+
+  const cities = [
+    "Mumbai",
+    "Pune",
+    "Delhi",
+    "Bangalore",
+    "Hyderabad",
+    "Chennai",
+    "Ahmedabad"
+  ];
 
   const services = [
     {
@@ -75,48 +95,38 @@ function ServicesSection() {
               <div className="service-fields">
                 {service.fields.map((field, index) => (
                   <div className="form-field" key={index}>
-                    
-                    {/* WEIGHT INPUT */}
+
+                    {/* WEIGHT */}
                     {field.type === "weight" ? (
                       <div className="weight-input-container">
-                        <button 
+                        <button
                           className="weight-btn"
                           onClick={(e) => {
                             e.stopPropagation();
                             setWeight(Math.max(1, weight - 1));
                           }}
-                        >
-                          -
-                        </button>
+                        >-</button>
 
                         <input
                           type="number"
                           value={weight}
-                          onChange={(e) =>
-                            setWeight(
-                              Math.max(1, parseInt(e.target.value, 10) || 1)
-                            )
-                          }
                           className="field-input weight-input"
-                          min="1"
                           readOnly
                         />
 
-                        <button 
+                        <button
                           className="weight-btn"
                           onClick={(e) => {
                             e.stopPropagation();
                             setWeight(weight + 1);
                           }}
-                        >
-                          +
-                        </button>
+                        >+</button>
 
                         <span className="weight-unit">kg</span>
                       </div>
+
                     ) : field.type === "datetime" ? (
-                      
-                      /* DATE INPUT */
+
                       <div className="date-input-container">
                         <div
                           className="input-with-icon"
@@ -155,30 +165,67 @@ function ServicesSection() {
                                 }));
                               }}
                               value={dates[service.id]}
-                              className="custom-calendar"
                             />
                           </div>
                         )}
                       </div>
+
                     ) : (
-                      
-                      /* NORMAL INPUT */
-                      <input
-                        type="text"
-                        placeholder={field.placeholder}
-                        className="field-input"
-                      />
+
+                      service.id === "transport" &&
+                      (field.placeholder === "Pickup location" ||
+                        field.placeholder === "Drop location") ? (
+
+                        <input
+                          type="text"
+                          placeholder={field.placeholder}
+                          value={
+                            field.placeholder === "Pickup location"
+                              ? locationValues.pickup
+                              : locationValues.drop
+                          }
+                          className="field-input"
+                          readOnly
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowLocationBox(
+                              field.placeholder === "Pickup location"
+                                ? "pickup"
+                                : "drop"
+                            );
+                          }}
+                        />
+
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder={field.placeholder}
+                          className="field-input"
+                        />
+                      )
                     )}
                   </div>
                 ))}
               </div>
 
-              {/* ✅ FIXED BUTTON */}
-              <button 
+              {/* 🔥 UPDATED BUTTON (ONLY THIS PART ADDED) */}
+              <button
                 className={`service-btn ${service.buttonColor}`}
-                onClick={() => {
-                  if (service.id === "holiday") {
-                    navigate("/holiday-packages");
+                onClick={(e) => {
+                  e.stopPropagation();
+
+                  if (service.id === "transport") {
+                    if (!locationValues.pickup || !locationValues.drop) {
+                      alert("Please select both pickup and drop location");
+                      return;
+                    }
+
+                    navigate("/truck", {
+                      state: {
+                        pickup: locationValues.pickup,
+                        drop: locationValues.drop
+                      }
+                    });
                   }
                 }}
               >
@@ -188,6 +235,67 @@ function ServicesSection() {
           ))}
         </div>
       </div>
+
+      {/* 🔥 POPUP */}
+      {showLocationBox && (
+        <div className="location-popup">
+          <div className="location-box">
+            <h3>
+              {showLocationBox === "pickup"
+                ? "Enter your pickup location"
+                : "Enter your drop location"}
+            </h3>
+
+            <input
+              type="text"
+              className="popup-input"
+              placeholder="Type location..."
+              value={locationValues[showLocationBox]}
+              onChange={(e) => {
+                setLocationValues((prev) => ({
+                  ...prev,
+                  [showLocationBox]: e.target.value,
+                }));
+              }}
+            />
+
+            {locationValues[showLocationBox] && (
+              <div className="suggestions-box">
+                {cities
+                  .filter((city) =>
+                    city
+                      .toLowerCase()
+                      .includes(
+                        locationValues[showLocationBox].toLowerCase()
+                      )
+                  )
+                  .map((city, i) => (
+                    <div
+                      key={i}
+                      className="suggestion-item"
+                      onClick={() => {
+                        setLocationValues((prev) => ({
+                          ...prev,
+                          [showLocationBox]: city,
+                        }));
+                        setShowLocationBox(null);
+                      }}
+                    >
+                      {city}
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            <button
+              className="popup-btn"
+              onClick={() => setShowLocationBox(null)}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
