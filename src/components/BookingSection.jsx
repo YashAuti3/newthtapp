@@ -19,6 +19,16 @@ function BookingSection() {
       groupSize: "Up to 15"
     },
     {
+      id: 1,
+      title: "Kedarnath Temple Trek",
+      image: kedarnath,
+      price: "₹8000",
+      description: "Experience the spiritual journey to the sacred Kedarnath shrine. Trek through the majestic Himalayas and witness breathtaking mountain views. A pilgrimage like no other...",
+      location: "Kedarnath, Uttarakhand",
+      duration: "3 days",
+      groupSize: "Up to 15"
+    },
+    {
       id: 2,
       title: "Kashmir Valley Tour",
       image: kashmir,
