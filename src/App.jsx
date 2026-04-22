@@ -12,7 +12,7 @@ import BookingSection from "./components/BookingSection";
 import Footer from "./components/Footer";
 import TruckPages from "./components/TruckPages";
 
-import HolidayPackagesPage from "./pages/HolidayPackagesPage";
+
 import ExperienceDetailPage from "./pages/ExperienceDetailPage";
 
 function HomePage() {
@@ -39,11 +39,9 @@ function Layout() {
         <Route path="/truck" element={<TruckPages />} />
 
         {/* Your holiday routes */}
-        <Route path="/holiday-packages" element={<HolidayPackagesPage />} />
-        <Route
-          path="/holiday-packages/:id"
-          element={<ExperienceDetailPage />}
-        />
+        
+        
+      
       </Routes>
 
       {!hideLayout && <Footer />}

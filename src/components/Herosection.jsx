@@ -20,7 +20,7 @@ function HeroSection() {
             <h1>
               BOOK CAB,<br />
               TRANSPORT,<br />
-              OR HOLIDAY PLAN
+              
             </h1>
 
             <p className="hero-desc">
@@ -54,12 +54,7 @@ function HeroSection() {
               Transport
             </button>
 
-            <button
-              className={activeTab === "holiday" ? "active" : ""}
-              onClick={() => setActiveTab("holiday")}
-            >
-              Holiday
-            </button>
+            
           </div>
 
           {/* FORM WITH LABELS */}
